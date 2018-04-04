@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+cpus=1
+cpuexecutioncap=80
+memory=1024
