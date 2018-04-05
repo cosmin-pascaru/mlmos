@@ -10,6 +10,15 @@ load()
     source ./${filename}
 }
 
+extra_config()
+{
+    file=$1
+
+    echo "hostname=${hostname}" >> file
+    echo "repo_remote=https://github.com/cosmin-pascaru/mlmos.git" >> file
+    echo "repo_workdir=extra_tema1/" >> file
+}
+
 deploy()
 {
     hostname=$1
@@ -26,9 +35,12 @@ deploy()
     ok= load "${config_file}"
 
     shared_folder_host_path="shared_${hostname}"
+    shared_folder_config_path="${shared_folder_host_path}/config.vm"
 
     ok= ${ok} && mkdir "${shared_folder_host_path}"
-    ok= ${ok} && cp "${config_file}" "${shared_folder_host_path}/config.vm"
+    ok= ${ok} && cp "${config_file}" "${shared_folder_config_path}"
+
+    extra_config ${shared_folder_config_path}
 
     shared_folder_host_path="$(realpath ${shared_folder_host_path})"
 

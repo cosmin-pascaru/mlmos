@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+conn="enp0s8"
+ip="192.168.56.101/24"
+
+
 redirect_output()
 {
     local OUTPUT_FILE="/var/log/system-bootstrap.log"
@@ -21,6 +26,12 @@ begin_message()
     echo "--------------------------------------------------------------"
 }
 
+load()
+{
+    config_file=$1
+    source ${config_file}
+}
+
 install_basic()
 {
     yum update -y
@@ -30,26 +41,24 @@ install_basic()
 
 setup_network()
 {
-    CONN="enp0s8"
-    IP="192.168.56.101/24"
-
     declare -A settings=(
         ["ipv4.method"]="manual"
-        ["ipv4.addresses"]="$IP"
+        ["ipv4.addresses"]="$ip"
+        ["connection.autoconnect"]="yes"
     )
 
     for key in ${!settings[@]}; do
         val=${settings[$key]}
 
-        ok= nmcli con mod $CONN $key $val
+        ok= nmcli con mod $conn $key $val
 
         if [[ ${ok} -ne 0 ]]; then
             break
         fi
     done
 
-    ok= $ok && nmcli con down $CONN
-    ok= $ok && nmcli con up   $CONN
+    ok= $ok && nmcli con down $conn
+    ok= $ok && nmcli con up   $$conn
 
     return $ok
 }
@@ -72,8 +81,8 @@ set_attribute()
 
 setup_rsa()
 {
-    echo $HOME
-    yes "" | ssh-keygen -t rsa -N ""
+#    echo $HOME
+#    yes "" | ssh-keygen -t rsa -N ""
 }
 
 setup_ssh()
@@ -109,6 +118,10 @@ setup_selinux()
 redirect_output
 
 begin_message
+
+if [[ $1 ]]; then
+    load "$1"
+fi
 
 ok=        install_basic
 ok= $ok && setup_network

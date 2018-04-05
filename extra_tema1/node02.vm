@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Initial vm setup
+
+cpus=1
+cpuexecutioncap=80
+memory=1024
+
+# Service config
+
+hostname="node02"
+repo_remote="https://github.com/cosmin-pascaru/mlmos.git"
+repo_basename="mlmos"
+repo_workdir="extra_tema1/"
+
+# Bootstrap config
+
+ip="192.168.56.103"
