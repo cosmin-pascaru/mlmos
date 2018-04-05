@@ -81,6 +81,7 @@ set_attribute()
 
 setup_rsa()
 {
+    echo "not implemented"
 #    echo $HOME
 #    yes "" | ssh-keygen -t rsa -N ""
 }
