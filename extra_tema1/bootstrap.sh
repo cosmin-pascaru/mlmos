@@ -58,7 +58,7 @@ setup_network()
     done
 
     ok= $ok && nmcli con down $conn
-    ok= $ok && nmcli con up   $$conn
+    ok= $ok && nmcli con up   $conn
 
     return $ok
 }
@@ -116,7 +116,7 @@ setup_selinux()
     return $ok
 }
 
-redirect_output
+#redirect_output
 
 begin_message
 
