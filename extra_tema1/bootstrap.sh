@@ -135,5 +135,5 @@ else
     echo "Failure!"
 fi
 
-restore_output
+#restore_output
 
